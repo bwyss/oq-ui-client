@@ -14,24 +14,40 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/agpl.html>. */
 
-Geodetic = Ext.extend(gxp.Viewer, {
+Hazard_Event_Based = Ext.extend(gxp.Viewer, {
 
     legendTabTitle: "Legend",
 	summaryId: null,
-    
+
     constructor: function(config) {
-        
+
         Ext.Window.prototype.shadow = false;
-        
-        // property names for FeatureEditor and FeatureGrid
-        var propertyNames = {
-            // custom fied names for the fault summary table
-            "fault_name": "Fault Name"
-        };
-        
+
+        var user_profile = new Ext.Panel({
+            labelWidth: 90,
+            border: false,
+            width: 400,
+            hideBorders: true,
+            autoScroll: 'true',
+            items: [{
+                html: '<img src="http://openquake.org/wp-content/uploads/2012/01/Screen-Shot-2012-01-13-at-2.41.04-PM.png">'
+            }]
+        });
+
+        var dashboard = new Ext.Panel({
+            labelWidth: 90,
+            border: false,
+            width: 400,
+            hideBorders: true,
+            autoScroll: 'true',
+            items: [{
+                html: '<img src="http://openquake.org/wp-content/uploads/2012/01/Hazard-map-South-Asia.png">'
+            }]
+        });
+
         Ext.applyIf(config, {
             proxy: "/proxy?url=",
-                
+
             mapItems: [{
                 xtype: "gx_zoomslider",
                 vertical: true,
@@ -57,18 +73,22 @@ Geodetic = Ext.extend(gxp.Viewer, {
                     header: false,
                     border: false,
                     defaults: {
-                       hideBorders: true,
-                       autoScroll: true
-                
+                        hideBorders: true,
+                        autoScroll: true
                     },
                     items: [{
-                        id: "tree",
-                        title: "Layers"
+                        id: 'event',
+                        title: "Classical probabilistic hazard",
+                        items: [dashboard],
+                        padding: 2
                     }, {
                         id: "user",
                         title: "User Profile",
-                        items:[user_profile],
+                        items: [user_profile],
                         padding: 10
+                    }, {
+                        id: "tree",
+                        title: "Layers"
                     }]
                 },
 		"map", {
@@ -78,10 +98,10 @@ Geodetic = Ext.extend(gxp.Viewer, {
                     border: false,
                     height: 0,
                     split: true,
-                    collapseMode: "mini",
+                    collapseMode: "mini"
                 }]
             }],
-            
+
             tools: [{
                 actionTarget: {target: "paneltbar", index: 0},
                 outputAction: 0,
@@ -89,14 +109,20 @@ Geodetic = Ext.extend(gxp.Viewer, {
                     title: "Login",
                     width: 900,
                     height: 500,
-                    modal: true
+                    modal: true,
+                    bodyCfg: {
+                        tag: "iframe",
+                        src: "http://178.79.185.190/",
+                        style: {border: 0}
+                    }
                 },
                 actions: [{
-                    text: "Login",
+                    iconCls: "icon-geoexplorer",
+                    text: "Login"
                 }]
-            },{
+            }, {
                 ptype: "gxp_layertree",
-                outputTarget: "tree",
+                outputTarget: "tree"
             }, {
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
@@ -112,11 +138,10 @@ Geodetic = Ext.extend(gxp.Viewer, {
                 featureManager: "featuremanager",
                 outputTarget: "featuregrid",
                 outputConfig: {
-                    id: "grid",
-                    propertyNames: propertyNames
+                    id: "grid"
                 },
                 controlOptions: {
-                    multiple: true,
+                    multiple: true
                 }
             }, {
                 ptype: "gxp_googlegeocoder",
@@ -125,31 +150,31 @@ Geodetic = Ext.extend(gxp.Viewer, {
                     emptyText: "Search for a location ..."
                 }
             }, {
-		         ptype: "gxp_wmsgetfeatureinfo",
-		         actionTarget: "paneltbar",
-	             outputConfig: {
-	                 width: 400
-	                 }
-	         },{
-        		ptype: "gxp_legend",
-        		outputTarget: "west",
-        		outputConfig: {
-        		    title: this.legendTabTitle,
-        		    autoScroll: true
-        		}
-        	}, {
-            	ptype: "gxp_measure",
-            	actionTarget: {target: "paneltbar", index: 6},
-            	toggleGroup: "main"
-            }, {
-            	ptype: "gxp_zoomtoextent",
-            	actionTarget: "paneltbar"
-            }, {
-            	ptype: "gxp_zoom",
-            	actionTarget: "paneltbar"
-            }, {
-            	ptype: "gxp_navigationhistory",
-            	actionTarget: "paneltbar"
+		        ptype: "gxp_wmsgetfeatureinfo",
+		        actionTarget: "paneltbar",
+	            outputConfig: {
+	                width: 400
+	            }
+	        }, {
+	            ptype: "gxp_legend",
+	            outputTarget: "west",
+	            outputConfig: {
+	                title: this.legendTabTitle,
+	                autoScroll: true
+	            }
+	        }, {
+	            ptype: "gxp_measure",
+	            actionTarget: {target: "paneltbar", index: 6},
+	            toggleGroup: "main"
+	        }, {
+	            ptype: "gxp_zoomtoextent",
+	            actionTarget: "paneltbar"
+	        }, {
+	            ptype: "gxp_zoom",
+	            actionTarget: "paneltbar"
+	        }, {
+	            ptype: "gxp_navigationhistory",
+	            actionTarget: "paneltbar"
             }, {
                 ptype: "gxp_zoomtoselectedfeatures",
                 featureManager: "featuremanager",
@@ -169,30 +194,16 @@ Geodetic = Ext.extend(gxp.Viewer, {
                     height: 410
                 }
             }, {
-            	ptype: "gxp_snappingagent",
-            	id: "snapping-agent",
-            	targets: [{
-            		source: "local",
-            		name: "geonode:trace"
-            	}]
-    	     }]
+                ptype: "gxp_snappingagent",
+                id: "snapping-agent",
+                targets: [{
+                    source: "local",
+                    name: "geonode:trace"
+                }]
+            }]
         });
 
-        FaultedEarth.superclass.constructor.apply(this, arguments);
+        Hazard_Event_Based.superclass.constructor.apply(this, arguments);
     }
 
 });
-
-var user_profile = new Ext.Panel ({
-    labelWidth: 90,
-    border:false,
-    width: 400,
-    hideBorders: true,
-    autoScroll: 'true',
-    items: [{
-		html: '<img src="http://openquake.org/wp-content/uploads/2012/01/Screen-Shot-2012-01-13-at-2.41.04-PM.png">',
-		}]
-})
-
-
-
