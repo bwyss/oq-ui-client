@@ -112,6 +112,13 @@ GED_exposure = Ext.extend(gxp.Viewer, {
                     name: "ged:country_facts"
                 }
             }, {
+        		ptype: "gxp_legend",
+        		outputTarget: "west",
+        		outputConfig: {
+        		    title: this.legendTabTitle,
+        		    autoScroll: true
+        		}
+        	}, {
 	            ptype: "gxp_zoomtoextent",
 	            actionTarget: "paneltbar"
             }, {
