@@ -131,7 +131,13 @@ GED_exposure = Ext.extend(gxp.Viewer, {
                 outputConfig: {
                     emptyText: "Search for a country ..."
                 }
-            }]
+            }, {
+		         ptype: "gxp_wmsgetfeatureinfo",
+		         actionTarget: "paneltbar",
+	             outputConfig: {
+	                 width: 400
+	                 }
+	         }]
         });
 
         GED_exposure.superclass.constructor.apply(this, arguments);
