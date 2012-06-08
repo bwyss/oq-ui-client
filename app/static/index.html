@@ -17,7 +17,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Global Risk Map</title>
+        <title>Explore Basic</title>
         
         <!-- IE 8 Compatibility -->
         <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
@@ -59,7 +59,7 @@
             Ext.BLANK_IMAGE_URL = "theme/app/img/blank.gif";
             OpenLayers.ImgPath = "externals/openlayers/img/";
 
-            var app = new Global_Risk_Map({
+            var app = new Explore_Basic({
 
                 localGeoServerUrl: "/geoserver/",
                 localGeoNodeUrl: 'http://' + window.location.hostname + "/proxy/?url=",
@@ -106,6 +106,7 @@
                     center: [86, 30],
                     zoom: 3
                 }
+
             });
 
        </script>

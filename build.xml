@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="GED4GEM_country" default="dist" basedir=".">
+<project name="Explore_Basic" default="dist" basedir=".">
 
     <description>
-        FaultedEarth Build File
+        Explore Basic Build File
     </description>
 
     <property name="build" location="build"/>
