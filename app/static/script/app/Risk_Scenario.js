@@ -41,7 +41,7 @@ Risk_Scenario = Ext.extend(gxp.Viewer, {
             hideBorders: true,
             autoScroll: 'true',
             items: [{
-                html: '<img src="http://openquake.org/wp-content/uploads/2012/01/Hazard-map-South-Asia.png">'
+                html: '<img src="http://openquake.org/wp-content/uploads/2012/01/parameters_v02_Scenario-risk.png">'
             }]
         });
 
