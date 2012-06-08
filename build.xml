@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="GED4GEM_country" default="dist" basedir=".">
+<project name="GED_exposure" default="dist" basedir=".">
 
     <description>
-        FaultedEarth Build File
+        GED_exposure Build File
     </description>
 
     <property name="build" location="build"/>
