@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Geodetic" default="dist" basedir=".">
+<project name="geodetic" default="dist" basedir=".">
 
     <description>
         Geodetic Build File
