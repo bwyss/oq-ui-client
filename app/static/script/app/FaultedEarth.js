@@ -126,6 +126,21 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
             "area_pref": "Area Pref",
         };
         
+        var eastPanel = new Ext.Panel({ 
+            xtype: "container", 
+            title: "test",
+            layout: "fit", 
+            align: "stretch", 
+            //pack: "start", 
+            //width: 200, 
+            items: [{ 
+                //xtype: "container", 
+                id: "identify", 
+                layout: "fit", 
+                height: 250 
+            }] 
+        });
+
         var tabs = new Ext.TabPanel({
         	animCollapse: true,
         	activeTab : 0,
@@ -188,6 +203,19 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                     items: ["-"]
                 },
                 items: [{
+                    id: "east",
+                    region: "east",
+                    layout: "accordion",
+                    width: 295,
+                    split: true,
+                    collapsible: true,
+                    collapseMode: "mini",
+                    header: false,
+                    border: false,
+                    items: [
+                        eastPanel
+                        ]
+                    }, {
                     id: "west",
                     region: "west",
                     layout: "accordion",
@@ -393,6 +421,8 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 id: "trace_featureeditor",
                 featureManager: "trace_featuremanager",
                 actionTarget: "traceform_tooltarget",
+                toggleGroup: "layertools",
+                maximizable: true,
                 autoLoadFeatures: true,
                 createFeatureActionText: "Draw",
                 editFeatureActionText: "Modify",
@@ -411,7 +441,9 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 id: "featureeditor",
                 featureManager: "summary_featuremanager",
                 modifyOnly: true,
+                maximizable: true,
                 actionTarget: "summaryform_tooltarget",
+                toggleGroup: "layertools",
                 editFeatureActionText: "Modify",
                 snappingAgent: "snapping-agent",
                 outputConfig: {
@@ -428,6 +460,8 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 id: "featureeditor",
                 featureManager: "site_featuremanager",
                 actionTarget: "siteform_tooltarget",
+                toggleGroup: "layertools",
+                maximizable: true,
                 createFeatureActionText: "Draw",
                 editFeatureActionText: "Modify",
                 snappingAgent: "snapping-agent",
@@ -446,6 +480,8 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 id: "featureeditor",
                 featureManager: "fault_featuremanager",
                 actionTarget: "faultform_tooltarget",
+                toggleGroup: "layertools",
+                maximizable: true,
                 createFeatureActionText: "Draw",
                 editFeatureActionText: "Modify",
                 snappingAgent: "snapping-agent",
@@ -464,6 +500,8 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 id: "featureeditor",
                 featureManager: "source_featuremanager",
                 actionTarget: "sourceform_tooltarget",
+                toggleGroup: "layertools",
+                maximizable: true,
                 readOnly: true,
                 snappingAgent: "snapping-agent",
                 autoLoadFeatures: true,
@@ -472,7 +510,7 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 }
             }, {
         		ptype: "gxp_legend",
-        		outputTarget: "west",
+        		outputTarget: "east",
         		outputConfig: {
         		    title: this.legendTabTitle,
         		    autoScroll: true
@@ -484,11 +522,18 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                     emptyText: "Search for a location ..."
                 }
             }, {
-		         ptype: "gxp_wmsgetfeatureinfo",
-		         actionTarget: "paneltbar",
-	             outputConfig: {
-	                 width: 400
-	                 }
+		        ptype: "gxp_wmsgetfeatureinfo",
+		        id: "gxp_info",
+		        actionTarget: "paneltbar",
+		        format: "grid",
+		        maximizable: true,
+	            outputConfig: {
+                    xtype: 'panel',
+                    propertyNames: propertyNames
+                },
+                outputTarget : "identify", 
+                format : 'grid',
+	            toggleGroup: "layertools"
 	         }, {
             	ptype: "gxp_measure",
             	actionTarget: {target: "paneltbar", index: 6},
