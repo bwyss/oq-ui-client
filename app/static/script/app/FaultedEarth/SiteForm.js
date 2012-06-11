@@ -136,8 +136,10 @@ FaultedEarth.SiteForm = Ext.extend(gxp.plugins.Tool, {
                 },
                 html: "To associate site observations to a Fault Section,<b> select site observations in the grid or on the map</b> hold down ctl or shift to select multiple site observations. Then click join. Filter the grid with the options below."
             }, {
-                xtype: "combo",
+                xtype: "grid",
                 store: store,
+                hight: 400,
+                width: 400,
                 fieldLabel: 'Neotectonic Sections',
                 //displayField: 'displayFieldName',   // what the user sees in the popup
                 //valueField: 'sec_name',        // what is passed to the 'change' event

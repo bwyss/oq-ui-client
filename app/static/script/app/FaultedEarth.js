@@ -126,6 +126,30 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
             "area_pref": "Area Pref",
         };
         
+        var store = new GeoExt.data.WMSCapabilitiesStore({
+            url: "/geoserver/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.1.1&typeName=geonode:fault_section_view&maxFeatures=50",
+            id: "test",
+            fields: ['sec_name'],
+            autoLoad: true
+        });
+        
+        var grid = new Ext.grid.GridPanel({
+            title: "WMS Capabilities",
+            store: store,
+            columns: [
+                {header: "Title", dataIndex: "title", sortable: true},
+                {header: "Name", dataIndex: "name", sortable: true},
+                {header: "Queryable", dataIndex: "queryable", sortable: true, width: 70},
+                {id: "description", header: "Description", dataIndex: "abstract"}
+            ],
+            autoExpandColumn: "description",
+            //renderTo: "capgrid",
+            height: 300,
+            width: 650,
+        });
+
+        store.load();
+        
         var tabs = new Ext.TabPanel({
         	animCollapse: true,
         	activeTab : 0,
@@ -167,6 +191,10 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                     layout: "fit",
                     height: 180,
                 }]
+            },
+            {
+                title: 'test',
+                items: [grid]
             }]
     	});
         
