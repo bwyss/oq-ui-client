@@ -73,6 +73,15 @@ FaultedEarth.SiteForm = Ext.extend(gxp.plugins.Tool, {
     },
     
     addOutput: function(config) {
+
+        var store = new GeoExt.data.WMSCapabilitiesStore({
+            url: "/geoserver/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.1.1&typeName=geonode:fault_section_view&maxFeatures=50",
+            fields: ['sec_name'],
+            autoLoad: true
+        });
+
+        store.load();
+
         return FaultedEarth.SiteForm.superclass.addOutput.call(this, {
             xtype: "form",
             labelWidth: 110,
@@ -126,6 +135,21 @@ FaultedEarth.SiteForm = Ext.extend(gxp.plugins.Tool, {
                     cls: "x-form-item"
                 },
                 html: "To associate site observations to a Fault Section,<b> select site observations in the grid or on the map</b> hold down ctl or shift to select multiple site observations. Then click join. Filter the grid with the options below."
+            }, {
+                xtype: "combo",
+                store: store,
+                fieldLabel: 'Neotectonic Sections',
+                //displayField: 'displayFieldName',   // what the user sees in the popup
+                //valueField: 'sec_name',        // what is passed to the 'change' event
+                //typeAhead: true,
+                //forceSelection: true,
+                mode: 'local',
+                columns: [
+                    {header: "Title", dataIndex: "sec_name", sortable: true}
+                ],
+                //triggerAction: 'all',
+                //selectOnFocus: true,
+                //editable: true,
             }, {
                 xtype: "container",
                 layout: "hbox",

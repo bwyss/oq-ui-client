@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="geodetic" default="dist" basedir=".">
+<project name="FaultedEarth" default="dist" basedir=".">
 
     <description>
-        Geodetic Build File
+        Faulted Earth Build File
     </description>
 
     <property name="build" location="build"/>
