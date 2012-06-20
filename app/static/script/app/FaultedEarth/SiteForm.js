@@ -71,97 +71,112 @@ FaultedEarth.SiteForm = Ext.extend(gxp.plugins.Tool, {
             scope: this
         });
     },
-    
+
     addOutput: function(config) {
-
-        var store = new GeoExt.data.WMSCapabilitiesStore({
-            url: "/geoserver/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.1.1&typeName=geonode:fault_section_view&maxFeatures=50",
-            fields: ['sec_name'],
-            autoLoad: true
-        });
-
-        store.load();
-
         return FaultedEarth.SiteForm.superclass.addOutput.call(this, {
             xtype: "form",
+            layout:'card',
             labelWidth: 110,
+            border:false,
+            closable:false,
+            activeItem:0,
+            plain:true,
+            bbar:[{
+                text:'< Prev',
+                ref:'../prevButton',
+                disabled:true,
+                handler:function() {
+                    card.getLayout().setActiveItem(0);
+                    card.prevButton.disable();
+                    card.nextButton.enable();
+                }
+
+            }, '->', {
+                text:'Next >',
+                ref:'../nextButton',
+                handler:function() {
+                    card.getLayout().setActiveItem(1);
+                    card.prevButton.enable();
+                    card.nextButton.disable();
+                }
+            }],
             defaults: {
                 anchor: "100%"
             },
             items: [{
-                xtype: "textfield",
-                ref: "nameContains",
-                fieldLabel: "Search for key word in notes",
-                validationDelay: 500,
-                listeners: {
-                    "valid": this.updateFilter,
-                    scope: this
-                }
-             }, {
-                xtype: "container",
-                layout: "hbox",
-                cls: "composite-wrap",
-                fieldLabel: "Create or modify a site observation",
-                items: [{
-                    id: this.id + "_tooltarget",
-                    xtype: "container",
-                    cls: "toolbar-spaced",
-                    layout: "toolbar"
-                }]
+               id: 'card1',
+               xtype: "form",
+               //layout:'fit',
+               labelWidth: 110,
+               border:false,
+               closable:false,
+               activeItem:0,
+               plain:true,
+               items: [{
+                   xtype: "textfield",
+                   ref: "nameContains",
+                   fieldLabel: "Search for key word in notes",
+                   validationDelay: 500,
+                   listeners: {
+                       "valid": this.updateFilter,
+                       scope: this
+                   }
+                }, {
+                   xtype: "container",
+                   layout: "hbox",
+                   cls: "composite-wrap",
+                   fieldLabel: "Create or modify a site observation",
+                   items: [{
+                       id: this.id + "_tooltarget",
+                       xtype: "container",
+                       cls: "toolbar-spaced",
+                       layout: "toolbar"
+                   }]
+               }, {
+                   xtype: "container",
+                   layout: "hbox",
+                   cls: "composite-wrap",
+                   fieldLabel: "Upload a Site Observation",
+                   items: [{
+                       xtype: "button",
+                       text: "Upload",
+                       iconCls: "icon-import",
+                       handler: function() {
+                           var featureManager = this.target.tools[this.featureManager];
+                           if (this.output[0].newFeaturesOnly.getValue()) {
+                               featureManager.on("clearfeatures", this.showUploadWindow, this, {single: true});
+                               featureManager.clearFeatures();
+                           } else {
+                               this.showUploadWindow();
+                           }
+                       },
+                       scope: this
+                   }]
+               }, {
+                   xtype: "box",
+                   autoEl: {
+                       tag: "p",
+                       cls: "x-form-item"
+                   },
+                   //html: "To associate site observations to a Fault Section,<b> select site observations in the grid or on the map</b> hold down ctl or shift to select multiple site observations. Then click join. Filter the grid with the options below."
+               }, /*{
+                   xtype: "container",
+                   layout: "hbox",
+                   fieldLabel: "Join Site Observations",
+                   items: [{
+                       xtype: "button",
+                       text: "Join",
+                       iconCls: "icon-layer-switcher",
+                       }]
+               }*/],
             }, {
-                xtype: "container",
-                layout: "hbox",
-                cls: "composite-wrap",
-                fieldLabel: "Upload a Site Observation",
-                items: [{
-                    xtype: "button",
-                    text: "Upload",
-                    iconCls: "icon-import",
-                    handler: function() {
-                        var featureManager = this.target.tools[this.featureManager];
-                        if (this.output[0].newFeaturesOnly.getValue()) {
-                            featureManager.on("clearfeatures", this.showUploadWindow, this, {single: true});
-                            featureManager.clearFeatures();
-                        } else {
-                            this.showUploadWindow();
-                        }
-                    },
-                    scope: this
-                }]
-            }, {
-                xtype: "box",
-                autoEl: {
-                    tag: "p",
-                    cls: "x-form-item"
-                },
-                html: "To associate site observations to a Fault Section,<b> select site observations in the grid or on the map</b> hold down ctl or shift to select multiple site observations. Then click join. Filter the grid with the options below."
-            }, {
-                xtype: "grid",
-                store: store,
-                hight: 400,
-                width: 400,
-                fieldLabel: 'Neotectonic Sections',
-                //displayField: 'displayFieldName',   // what the user sees in the popup
-                //valueField: 'sec_name',        // what is passed to the 'change' event
-                //typeAhead: true,
-                //forceSelection: true,
-                mode: 'local',
-                columns: [
-                    {header: "Title", dataIndex: "sec_name", sortable: true}
-                ],
-                //triggerAction: 'all',
-                //selectOnFocus: true,
-                //editable: true,
-            }, {
-                xtype: "container",
-                layout: "hbox",
-                fieldLabel: "Join Site Observations",
-                items: [{
-                    xtype: "button",
-                    text: "Join",
-                    iconCls: "icon-layer-switcher",
-                    }]
-            }],
+               id:'gridcard',
+               items: grid,
+               bodyStyle:'border-bottom:none',
+               //xtype:'examplegrid',
+               autoScroll:true,
+           }],
+            
             listeners: {
                 "added": function(cmp, ct) {
                     ct.on({
@@ -354,6 +369,28 @@ FaultedEarth.SiteForm = Ext.extend(gxp.plugins.Tool, {
         //TODO remove uploaded layer/store/style or call GeoNode updatelayers
     }
     
+});
+
+var store = new GeoExt.data.WMSCapabilitiesStore({
+    url: "/geoserver/wms?SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.1.1&typeName=geonode:fault_section_view&maxFeatures=50",
+    id: "test",
+    fields: ['sec_name'],
+    autoLoad: true
+});
+
+store.load();
+
+var grid = new Ext.grid.GridPanel({
+    title: "List of Neotectonic Sections",
+    store: store,
+    columns: [
+        {header: "Section Name", dataIndex: "title", sortable: true},
+        {id: "description", header: "Description", dataIndex: "abstract"}
+    ],
+    autoExpandColumn: "description",
+    //renderTo: "capgrid",
+    height: 300,
+    width: 650,
 });
 
 Ext.preg(FaultedEarth.SiteForm.prototype.ptype, FaultedEarth.SiteForm);

@@ -132,14 +132,14 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
             fields: ['sec_name'],
             autoLoad: true
         });
-        
+
+        store.load();
+
         var grid = new Ext.grid.GridPanel({
-            title: "WMS Capabilities",
+            title: "List of Neotectonic Sections",
             store: store,
             columns: [
-                {header: "Title", dataIndex: "title", sortable: true},
-                {header: "Name", dataIndex: "name", sortable: true},
-                {header: "Queryable", dataIndex: "queryable", sortable: true, width: 70},
+                {header: "Section Name", dataIndex: "title", sortable: true},
                 {id: "description", header: "Description", dataIndex: "abstract"}
             ],
             autoExpandColumn: "description",
@@ -148,8 +148,49 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
             width: 650,
         });
 
-        store.load();
-        
+    	var card = new Ext.Panel({
+            //title:Ext.get('page-title').dom.innerHTML,
+            width:280,
+            //height:300,
+            plain:true,
+            layout:'card',
+            //layoutConfig:{deferredRender:true},
+            border:false,
+            closable:false,
+            activeItem:0,
+            plain:true,
+            bbar:[{
+                text:'< Prev',
+                ref:'../prevButton',
+                disabled:true,
+                handler:function() {
+                    card.getLayout().setActiveItem(0);
+                    card.prevButton.disable();
+                    card.nextButton.enable();
+                }
+
+            }, '->', {
+                text:'Next >',
+                ref:'../nextButton',
+                handler:function() {
+                    card.getLayout().setActiveItem(1);
+                    card.prevButton.enable();
+                    card.nextButton.disable();
+                }
+            }],
+            items:[{
+                id:'site',
+                bodyStyle:'padding:10px',
+                //html:'Click on Next button to instantiate and render the grid.',
+            }, {
+                id:'gridcard',
+                items: grid,
+                bodyStyle:'border-bottom:none',
+                //xtype:'examplegrid',
+                autoScroll:true,
+            }]
+        });
+
         var tabs = new Ext.TabPanel({
         	animCollapse: true,
         	activeTab : 0,
@@ -191,13 +232,9 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                     layout: "fit",
                     height: 180,
                 }]
-            },
-            {
-                title: 'test',
-                items: [grid]
             }]
     	});
-        
+
         Ext.applyIf(config, {
             proxy: "/proxy?url=",
                 
@@ -242,8 +279,9 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                 		title: "Neotectonic Section Summary",
                 		padding: 10
                 	}, {
+                        title: 'Site Observation Form',
+                        //items: [card],
                         id: 'site',
-                        title: "Site Observation Form",
                         padding: 10
                     }, {
                 		id: "fault",
@@ -253,7 +291,7 @@ FaultedEarth = Ext.extend(gxp.Viewer, {
                     	id: "source",   
                     	title: "Fault Source",
                     	padding: 10
-                    }]
+                    }],
                 },
 		"map", {
                     id: "tabs",
