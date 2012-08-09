@@ -114,12 +114,21 @@ ISC_Viewer = Ext.extend(gxp.Viewer, {
 	             outputConfig: {
 	                 width: 400
 	                 }
-	         },{
+	         }, {
         		ptype: "gxp_legend",
         		outputTarget: "west",
         		outputConfig: {
         		    title: this.legendTabTitle,
         		    autoScroll: true
+        		}
+        	}, {
+        		ptype: "gxp_queryform",
+        		featureManager: "featuremanager",
+        		//outputTarget: "west",
+        		actionTarget: {target: "paneltbar"},
+        		outputConfig: {
+        		    title: "Query",
+                    width: 320
         		}
         	}, {
             	ptype: "gxp_measure",
