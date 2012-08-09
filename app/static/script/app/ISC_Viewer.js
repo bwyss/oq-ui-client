@@ -85,7 +85,6 @@ ISC_Viewer = Ext.extend(gxp.Viewer, {
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
                 maxFeatures: 100,
-                id: "states_manager",
                 paging: false,
                 autoSetLayer: true
             }, {
