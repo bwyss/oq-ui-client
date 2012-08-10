@@ -84,9 +84,24 @@ ISC_Viewer = Ext.extend(gxp.Viewer, {
             }, {
                 ptype: "gxp_featuremanager",
                 id: "featuremanager",
-                maxFeatures: 100,
+                autoLoadFeatures: true,
+                autoSetLayer: true,
                 paging: false,
-                autoSetLayer: true
+                maxFeatures: 100,
+            }, {
+                ptype: "gxp_featuregrid",
+                alwaysDisplayOnMap: true,
+                selectOnMap: true,
+                displayMode: "selected",
+                featureManager: "featuremanager",
+                outputTarget: "featuregrid",
+                outputConfig: {
+                    id: "grid",
+                    propertyNames: propertyNames
+                },
+                controlOptions: {
+                    multiple: true,
+                }
             }, {
                 ptype: "gxp_googlegeocoder",
                 outputTarget: "paneltbar",
