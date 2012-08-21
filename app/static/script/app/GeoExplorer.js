@@ -275,7 +275,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             },
             scope: this
         });
-        
+        /*
         // register the color manager with every color field, for Styler
         Ext.util.Observable.observeClass(gxp.form.ColorField);
         gxp.form.ColorField.on({
@@ -284,7 +284,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
                 manager.register(field);
             }
         });
-
+*/
         // global beforeunload handler
         window.onbeforeunload = (function() {
             if (this.fireEvent("beforeunload") === false) {
@@ -589,7 +589,7 @@ var GeoExplorer = Ext.extend(gxp.Viewer, {
             contentEl: 'header-wrapper'
         });
 
-        Lang.registerLinks();
+        //Lang.registerLinks();
 
         this.portalItems = [
             header, {
